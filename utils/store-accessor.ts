@@ -4,12 +4,12 @@ import  SchemaModule  from '../store/SchemaModule'
 import  data  from '../store/data'
 
 
-let exampleStore: SchemaModule
+let schemaStore: SchemaModule
 let dataStore: data
 
 function initialiseStores(store: Store<any>): void {
-  exampleStore = getModule(SchemaModule, store);
+  schemaStore = getModule(SchemaModule, store);
   dataStore = getModule(data, store);
 }
 
-export { initialiseStores, exampleStore, dataStore }
+export { initialiseStores, schemaStore, dataStore }

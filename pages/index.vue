@@ -8,6 +8,8 @@
       <v-card>
         <v-card-title class="headline">
           {{ message }}
+
+          <v-btn @click="reset">Reset</v-btn>
           <!-- <p>{{ data.length }} items in data, last one is {{ last }}</p> -->
         </v-card-title>
         <v-card-text>
@@ -86,7 +88,9 @@ import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
 import axios from 'axios'
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { exampleStore, dataStore } from '~/store'
+import { schemaStore, dataStore } from '~/store'
+
+
 
 export default {
   components: {
@@ -94,7 +98,6 @@ export default {
     VuetifyLogo,
   },
 
-  
 
   // asyncData(payload) {
   //   return axios.get("https://localhost:5001/api/bookings").then(({data}) => {
@@ -104,19 +107,29 @@ export default {
 
 computed: mapState({
   message: state => state.message
-  }),
+}),
+methods: mapMutations([
+  'reset'
+])
 
 
 
-async fetch(){
-  //this.$store.dispatch('fetchMessage()');
+// async fetch(){
+//     await this.$store.dispatch('fetchMessage');
+ 
+
+  // await schemaStore.fetchMessage();
+  // console.log("THIS iS the data " + schemaStore.bookings[0]);
+
+  // this.message = schemaStore.bookings;
+ 
  // dataStore.addData('a');
-  exampleStore.fetchMessage();
+//  exampleStore.fetchMessage();
 }
   // created() {
   //    axios.get("https://localhost:5001/api/bookings").then(({data}) => {
   //      this.message = data;
   //    })
   // }
-}
+// }
 </script>

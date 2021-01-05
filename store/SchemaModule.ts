@@ -21,7 +21,15 @@
 // }
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import { $axios } from '~/utils/api'
+import https from 'https'
+import { Booking } from '~/types/Booking'
 //import Axios from "axios";
+
+
+const agent = new https.Agent({  
+    rejectUnauthorized: false
+  })
+
 
 @Module({
     name: 'SchemaModule',
@@ -30,13 +38,18 @@ import { $axios } from '~/utils/api'
   })
  export default class SchemaModule extends VuexModule {
 
+    
+
     initState = () => ({
         message: "init"
     })
 
+    bookings: Booking[] = [];
+
+
     @Mutation
-    setMessage(state: any, message: any) {
-        state.massage = message
+    setBookings(bookings : Booking[]) {
+       this.bookings = bookings;
     }
 
     @Mutation
@@ -53,9 +66,16 @@ import { $axios } from '~/utils/api'
     @Action({ rawError: true })
     async fetchMessage() {
         console.log("apa");
-        const message = (await $axios.$get("http://localhost:5000/api/bookings")).data;
-        console.log(message);
-        //this.setMessage("setMessage", message);
-        this.context.commit("setMessage", message);
+        // await $axios.$get("https://localhost:5001/api/bookings", { httpsAgent: agent }).then((res) => {
+        //     console.log(res);
+        //     this.context.commit("setMessage", res);
+        // });
+
+        const bookings = await $axios.$get("https://localhost:5001/api/bookings", { httpsAgent: agent }) as Booking[];
+        console.log(bookings)
+        this.setBookings(bookings);
+        // console.log(message);
+        // //this.setMessage("setMessage", message);
+        // this.context.commit("setMessage", message);
     }
 }
