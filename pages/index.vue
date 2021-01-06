@@ -1,11 +1,6 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-
       <div v-if="bookings">
         <p v-for="b in bookings">
           {{ b.projectName }}
@@ -17,42 +12,32 @@
         <v-text-field label="Worker id" v-model="WorkerId"></v-text-field>
         <v-text-field label="Project name" v-model="projectName"></v-text-field>
         <v-text-field disabled label="Start" v-model="startDate"></v-text-field>
-        <v-text-field disabled label="Finished" v-model="finishDate"></v-text-field>
-       
+        <v-text-field
+          disabled
+          label="Finished"
+          v-model="finishDate"
+        ></v-text-field>
+
         <v-date-picker v-model="startDate"></v-date-picker>
         <v-date-picker v-model="finishDate"></v-date-picker>
-     
-        <v-btn @click="saveBooking">Create</v-btn>
       </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      {{ bookings }}
+
+      <v-btn @click="saveBooking">Create</v-btn>
 
       <v-btn @click="reset">Reset</v-btn>
-      <!-- <p>{{ data.length }} items in data, last one is {{ last }}</p> -->
     </v-col>
   </v-row>
 </template>
 
 <script>
-import Logo from "~/components/Logo.vue";
-import VuetifyLogo from "~/components/VuetifyLogo.vue";
+
 import axios from "axios";
 import { mapState, mapActions, mapMutations } from "vuex";
 import { schemaStore, dataStore } from "~/store";
-import { DatePicker, TimeSelect } from "element-ui";
-import { Datetime } from "vue-datetime";
-import "vue-datetime/dist/vue-datetime.css";
 
 export default {
   components: {
-    Logo,
-    VuetifyLogo,
-    datetime: Datetime,
-    
+   
   },
   data: () => ({
     id: null,
