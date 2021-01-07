@@ -9,5 +9,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+   head() {
+      // Set Meta Tags for this Page
+    }
+};
 </script>

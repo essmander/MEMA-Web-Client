@@ -17,6 +17,7 @@
     "element-ui": "^2.14.1",
     "luxon": "^1.25.0",
     "nuxt": "^2.14.6",
+    "vee-validate": "^4.1.5",
     "vue-datetime": "^1.0.0-beta.14",
     "weekstart": "^1.0.1"
   },

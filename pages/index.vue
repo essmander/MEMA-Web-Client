@@ -7,37 +7,54 @@
         </p>
       </div>
 
-      <div>
-        <v-text-field label="Booking id" v-model="id"></v-text-field>
-        <v-text-field label="Worker id" v-model="WorkerId"></v-text-field>
-        <v-text-field label="Project name" v-model="projectName"></v-text-field>
-        <v-text-field disabled label="Start" v-model="startDate"></v-text-field>
-        <v-text-field
-          disabled
-          label="Finished"
-          v-model="finishDate"
-        ></v-text-field>
-
-        <v-date-picker v-model="startDate"></v-date-picker>
-        <v-date-picker v-model="finishDate"></v-date-picker>
-      </div>
-
-      <v-btn @click="saveBooking">Create</v-btn>
-
       <v-btn @click="reset">Reset</v-btn>
+      <v-dialog
+        v-model="dialog"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn color="primary" dark v-bind="attrs" v-on="on">
+            Create Booking
+          </v-btn>
+        </template>
+        <v-card>
+          <v-toolbar dark color="primary">
+            <v-btn
+              icon
+              dark
+              @click="
+                dialog = false;
+                reset;
+              ">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-toolbar-title>New booking</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+              <!-- <v-btn dark text @click="saveBooking"> Create </v-btn> -->
+            </v-toolbar-items>
+          </v-toolbar>
+     
+          <v-divider></v-divider>
+          <create-booking />
+        </v-card>
+      </v-dialog>
     </v-col>
   </v-row>
 </template>
 
 <script>
-
 import axios from "axios";
 import { mapState, mapActions, mapMutations } from "vuex";
 import { schemaStore, dataStore } from "~/store";
 
+import CreateBooking from "~/components/CreateBooking.vue";
+
 export default {
   components: {
-   
+    CreateBooking,
   },
   data: () => ({
     id: null,
@@ -48,6 +65,11 @@ export default {
     date: null,
     startDate: new Date().toISOString().substr(0, 10),
     finishDate: new Date().toISOString().substr(0, 10),
+
+    dialog: false,
+    notifications: false,
+    sound: true,
+    widgets: false,
   }),
   computed: {
     ...mapState({
@@ -72,6 +94,7 @@ export default {
       this.projectName = "";
       this.start = null;
       this.finish = null;
+      dialog = false
     },
   },
 };
