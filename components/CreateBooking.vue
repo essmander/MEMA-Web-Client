@@ -14,6 +14,7 @@
     <v-text-field
       label="Project name"
       v-model="projectName"
+      :rules="projectNameRules"
       required
     ></v-text-field>
 
@@ -23,7 +24,7 @@
       label="Start"
       v-model="startDate"
     ></v-text-field>
-    
+
     <v-text-field
       required
       disabled
@@ -34,9 +35,14 @@
     <v-date-picker v-model="startDate"></v-date-picker>
     <v-date-picker v-model="finishDate"></v-date-picker>
 
-    <v-btn :disabled="!valid" class="mr-4" @click="validate">
+    <v-btn :disabled="!valid" class="mr-4" @click="saveBooking">
       Create booking
     </v-btn>
+
+    <v-btn class="mr-4" @click="reset">
+      Reset Form
+    </v-btn>
+
   </v-form>
 </template>
 
@@ -57,12 +63,15 @@ export default {
 
     idRules: [
       (v) => !!v || "ID is required",
-      (v) => /[0-9]/.test(v) || "ID can only be numbers",
+      (v) => /([0-9])/.test(v) || "ID can only be numbers",
     ],
     workerIdRules: [
       (v) => !!v || "Worker is required",
-      (v) => /[0-9]/.test(v) || "worker Id can only be numbers",
+      (v) => /([0-9])/.test(v) || "worker Id can only be numbers",
     ],
+    projectNameRules: [
+      (v) => !!v || "Project name is required",
+    ]
   }),
 
   methods: {
@@ -74,8 +83,8 @@ export default {
           id: this.id,
           WorkerId: this.WorkerId,
           projectName: this.projectName,
-          start: this.start,
-          finish: this.finish,
+          start: this.startDate,
+          finish: this.finishDate,
         },
       });
       this.id = null;
@@ -87,6 +96,9 @@ export default {
     validate() {
       this.$refs.form.validate();
     },
+    reset () {
+        this.$refs.form.reset()
+      },
   },
 };
 </script>
