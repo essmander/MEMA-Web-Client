@@ -35,14 +35,11 @@
     <v-date-picker v-model="startDate"></v-date-picker>
     <v-date-picker v-model="finishDate"></v-date-picker>
 
-    <v-btn :disabled="!valid" class="mr-4" @click="saveBooking">
-      Create booking
-    </v-btn>
+    <v-btn :disabled="!valid" @click="saveBooking"> Create booking </v-btn>
 
-    <v-btn class="mr-4" @click="reset">
-      Reset Form
-    </v-btn>
+    <!-- <v-btn @click="reset"> Reset Form </v-btn> -->
 
+    <!-- <v-btn @click="close"> Close popup </v-btn> -->
   </v-form>
 </template>
 
@@ -69,36 +66,37 @@ export default {
       (v) => !!v || "Worker is required",
       (v) => /([0-9])/.test(v) || "worker Id can only be numbers",
     ],
-    projectNameRules: [
-      (v) => !!v || "Project name is required",
-    ]
+    projectNameRules: [(v) => !!v || "Project name is required"],
   }),
 
   methods: {
     // ...mapMutations(["reset"]),
     ...mapActions(["createBooking"]),
     async saveBooking() {
-      await this.createBooking({
-        booking: {
-          id: this.id,
-          WorkerId: this.WorkerId,
-          projectName: this.projectName,
-          start: this.startDate,
-          finish: this.finishDate,
-        },
-      });
-      this.id = null;
-      this.WorkerId = null;
-      this.projectName = "";
-      this.start = null;
-      this.finish = null;
+      if (this.validate()) {
+        await this.createBooking({
+          booking: {
+            id: this.id,
+            WorkerId: this.WorkerId,
+            projectName: this.projectName,
+            start: this.startDate,
+            finish: this.finishDate,
+          },
+        });
+
+        this.close();
+      }
     },
     validate() {
-      this.$refs.form.validate();
+      return this.$refs.form.validate();
     },
-    reset () {
-        this.$refs.form.reset()
-      },
+    reset() {
+      this.$refs.form.reset();
+    },
+    close() {
+      this.reset();
+      this.$emit("openDialog", false);
+    },
   },
 };
 </script>

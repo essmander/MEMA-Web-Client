@@ -21,13 +21,7 @@
         </template>
         <v-card>
           <v-toolbar dark color="primary">
-            <v-btn
-              icon
-              dark
-              @click="
-                dialog = false;
-                reset;
-              ">
+            <v-btn icon dark @click="dialog = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-toolbar-title>New booking</v-toolbar-title>
@@ -36,9 +30,9 @@
               <!-- <v-btn dark text @click="saveBooking"> Create </v-btn> -->
             </v-toolbar-items>
           </v-toolbar>
-     
+
           <v-divider></v-divider>
-          <create-booking />
+          <create-booking v-on:openDialog="closeDialog" />
         </v-card>
       </v-dialog>
     </v-col>
@@ -70,6 +64,7 @@ export default {
     notifications: false,
     sound: true,
     widgets: false,
+    openDialog: false,
   }),
   computed: {
     ...mapState({
@@ -94,7 +89,10 @@ export default {
       this.projectName = "";
       this.start = null;
       this.finish = null;
-      dialog = false
+      dialog = false;
+    },
+    closeDialog(arg) {
+      this.dialog = arg;
     },
   },
 };
