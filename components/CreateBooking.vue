@@ -36,10 +36,6 @@
     <v-date-picker v-model="finishDate"></v-date-picker>
 
     <v-btn :disabled="!valid" @click="saveBooking"> Create booking </v-btn>
-
-    <!-- <v-btn @click="reset"> Reset Form </v-btn> -->
-
-    <!-- <v-btn @click="close"> Close popup </v-btn> -->
   </v-form>
 </template>
 

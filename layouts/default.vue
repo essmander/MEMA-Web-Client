@@ -5,13 +5,16 @@
         <nuxt />
       </v-container>
     </v-main>
+    <bottom-navigation/>
   </v-app>
 </template>
 
 <script>
+import BottomNavigation from "~/components/BottomNavigation.vue";
+
 export default {
-   head() {
-      // Set Meta Tags for this Page
-    }
+    components: {
+    BottomNavigation,
+  },
 };
 </script>

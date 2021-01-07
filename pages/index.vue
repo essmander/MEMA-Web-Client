@@ -8,33 +8,8 @@
       </div>
 
       <v-btn @click="reset">Reset</v-btn>
-      <v-dialog
-        v-model="dialog"
-        fullscreen
-        hide-overlay
-        transition="dialog-bottom-transition"
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn color="primary" dark v-bind="attrs" v-on="on">
-            Create Booking
-          </v-btn>
-        </template>
-        <v-card>
-          <v-toolbar dark color="primary">
-            <v-btn icon dark @click="dialog = false">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-            <v-toolbar-title>New booking</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-toolbar-items>
-              <!-- <v-btn dark text @click="saveBooking"> Create </v-btn> -->
-            </v-toolbar-items>
-          </v-toolbar>
 
-          <v-divider></v-divider>
-          <create-booking v-on:openDialog="closeDialog" />
-        </v-card>
-      </v-dialog>
+     
     </v-col>
   </v-row>
 </template>
