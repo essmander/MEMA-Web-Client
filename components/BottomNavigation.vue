@@ -1,17 +1,13 @@
 <template>
-  <v-bottom-navigation color="primary" horizontal>
-    <!-- <template v-slot:activator="{ on, attrs }"> -->
+  <v-bottom-navigation
+    color="primary"
+    horizontal
+    fixed
+  >
     <v-btn @click="dialog = true">
       <span>Create</span>
-      <!-- <v-icon>event-plus</v-icon> -->
       <v-icon>mdi-calendar-plus</v-icon>
     </v-btn>
-    <!-- </template> -->
-    <!-- <v-btn>
-      <span>Recents</span>
-
-      <v-icon>mdi-history</v-icon>
-    </v-btn> -->
 
     <v-btn>
       <span>Favorites</span>
@@ -38,9 +34,7 @@
           </v-btn>
           <v-toolbar-title>New booking</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <!-- <v-btn dark text @click="saveBooking"> Create </v-btn> -->
-          </v-toolbar-items>
+          <v-toolbar-items> </v-toolbar-items>
         </v-toolbar>
 
         <v-divider></v-divider>

@@ -1,46 +1,40 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
-      <div v-if="bookings">
+      <v-list three-line subheader v-if="bookings">
+        <v-list-item v-for="b in bookings">
+          <v-list-item-content>
+            <v-list-item-title>{{ b.projectName }}</v-list-item-title>
+            <v-list-item-subtitle>
+              <p>Start: {{ b.start }}</p>
+            </v-list-item-subtitle>
+            <v-list-item-subtitle>
+              <p>Finish: {{ b.finish }}</p>
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+
+      <!-- <div v-if="bookings">
         <p v-for="b in bookings">
           {{ b.projectName }}
         </p>
-      </div>
+      </div> -->
 
       <v-btn @click="reset">Reset</v-btn>
-
-     
     </v-col>
   </v-row>
-</template>
 
+</template>
 <script>
 import axios from "axios";
 import { mapState, mapActions, mapMutations } from "vuex";
 import { schemaStore, dataStore } from "~/store";
 
-import CreateBooking from "~/components/CreateBooking.vue";
-
 export default {
-  components: {
-    CreateBooking,
-  },
-  data: () => ({
-    id: null,
-    WorkerId: null,
-    projectName: "",
-    start: null,
-    finish: null,
-    date: null,
-    startDate: new Date().toISOString().substr(0, 10),
-    finishDate: new Date().toISOString().substr(0, 10),
-
-    dialog: false,
-    notifications: false,
-    sound: true,
-    widgets: false,
-    openDialog: false,
-  }),
+  // components: {
+  //   BottomNavigation,
+  // },
   computed: {
     ...mapState({
       bookings: (state) => state.bookings,
@@ -48,27 +42,6 @@ export default {
   },
   methods: {
     ...mapMutations(["reset"]),
-    ...mapActions(["createBooking"]),
-    async saveBooking() {
-      await this.createBooking({
-        booking: {
-          id: this.id,
-          WorkerId: this.WorkerId,
-          projectName: this.projectName,
-          start: this.start,
-          finish: this.finish,
-        },
-      });
-      this.id = null;
-      this.WorkerId = null;
-      this.projectName = "";
-      this.start = null;
-      this.finish = null;
-      dialog = false;
-    },
-    closeDialog(arg) {
-      this.dialog = arg;
-    },
   },
 };
 </script>
