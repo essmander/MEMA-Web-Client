@@ -19,23 +19,62 @@
     ></v-text-field>
 
     <v-text-field
+      @click="openDateFromDialog"
       required
-      disabled
       label="Start"
       v-model="startDate"
     ></v-text-field>
 
     <v-text-field
+      @click="openDateToDialog"
       required
-      disabled
       label="Finished"
       v-model="finishDate"
     ></v-text-field>
 
-    <v-date-picker v-model="startDate"></v-date-picker>
-    <v-date-picker v-model="finishDate"></v-date-picker>
+    <v-btn width="100%" :disabled="!valid" @click="saveBooking"> Create booking </v-btn>
 
-    <v-btn :disabled="!valid" @click="saveBooking"> Create booking </v-btn>
+    <v-dialog
+      transition="dialog-bottom-transition"
+      max-width="600"
+      v-model="dateFromDialog"
+    >
+      <template v-slot:default="dialog">
+        <v-card>
+          <v-toolbar dark>
+            <v-toolbar-title> Select start date</v-toolbar-title>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+          <v-card-text>
+            <v-date-picker v-model="startDate"></v-date-picker>
+          </v-card-text>
+          <v-card-actions class="justify-end">
+            <v-btn text @click="dialog.value = false">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
+
+    <v-dialog
+      transition="dialog-bottom-transition"
+      max-width="600"
+      v-model="dateToDialog"
+    >
+      <template v-slot:default="dialog">
+        <v-card>
+          <v-toolbar dark>
+            <v-toolbar-title> Select end date</v-toolbar-title>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+          <v-card-text>
+               <v-date-picker v-model="finishDate"></v-date-picker>
+          </v-card-text>
+          <v-card-actions class="justify-end">
+            <v-btn text @click="dialog.value = false">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
   </v-form>
 </template>
 
@@ -45,6 +84,9 @@ import { mapState, mapActions, mapMutations } from "vuex";
 export default {
   data: () => ({
     valid: false,
+    dateFromDialog: false,
+    dateToDialog: false,
+
     id: null,
     WorkerId: null,
     projectName: "",
@@ -92,6 +134,12 @@ export default {
     close() {
       this.reset();
       this.$emit("openDialog", false);
+    },
+    openDateFromDialog() {
+      this.dateFromDialog = true;
+    },
+    openDateToDialog() {
+      this.dateToDialog = true;
     },
   },
 };

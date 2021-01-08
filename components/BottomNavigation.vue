@@ -10,15 +10,15 @@
     </v-btn>
 
     <v-btn>
-      <span>Favorites</span>
+      <span>Journal</span>
 
-      <v-icon>mdi-heart</v-icon>
+      <v-icon>mdi-car</v-icon>
     </v-btn>
 
     <v-btn>
-      <span>Nearby</span>
+      <span>Team</span>
 
-      <v-icon>mdi-map-marker</v-icon>
+      <v-icon>mdi-account-group </v-icon>
     </v-btn>
 
     <v-dialog
@@ -28,7 +28,7 @@
       transition="dialog-bottom-transition"
     >
       <v-card>
-        <v-toolbar dark color="primary">
+        <v-toolbar dark>
           <v-btn icon dark @click="dialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
