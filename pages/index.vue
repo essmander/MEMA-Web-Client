@@ -4,7 +4,8 @@
       <template v-slot:actions>
         <v-btn @click="login" color="primary">Login</v-btn>
         <v-btn @click="logout" color="primary">Logout</v-btn>
-        <v-btn @click="api('test')" color="primary">Test</v-btn>
+        <v-btn @click="api('test')" >Test</v-btn>
+        <v-btn @click="api('testmod')" >TestMOD</v-btn>
         <p>{{ testLabel }}</p>
         <v-select v-model="select" :items="items"></v-select>
         <v-btn class="mx-2" fab dark color="indigo" @click="dialog = true">
@@ -84,7 +85,7 @@ export default {
         client_id: "web-client",
         redirect_uri: "http://localhost:3000",
         response_type: "code",
-        scope: "openid profile IdentityServerApi",
+        scope: "openid profile IdentityServerApi role",
         post_logout_redirect_uri: "http://localhost:3000",
         //silent_redirect_uri: "http://localhost:3000/",
         userStore: new WebStorageStateStore({ store: window.localStorage }),
@@ -121,7 +122,7 @@ export default {
       return this.userMgr.signoutRedirect();
     },
     api(x) {
-      return this.$axios.$get("https://localhost:5001/api/bookings/test").then(s =>{
+      return this.$axios.$get("https://localhost:5001/api/bookings/"+x).then(s =>{
         console.log(s)
         });
       // await this.getTest().then((x) => (this.testLabel = x));
