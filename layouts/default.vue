@@ -5,16 +5,21 @@
         <nuxt />
       </v-container>
     </v-main>
-    <bottom-navigation/>
+    <bottom-navigation />
   </v-app>
 </template>
 
 <script>
 import BottomNavigation from "~/components/BottomNavigation.vue";
+import { mapState, mapGetters } from "vuex";
 
 export default {
-    components: {
+  components: {
     BottomNavigation,
+  },
+  computed: {
+    ...mapState("auth", ["loading"]),
+    // ...mapGetters("auth", ["authenticated"]),
   },
 };
 </script>

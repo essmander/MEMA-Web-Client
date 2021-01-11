@@ -109,7 +109,7 @@ export default {
 
   methods: {
     // ...mapMutations(["reset"]),
-    ...mapActions(["createBooking"]),
+    ...mapActions('schema',["createBooking"]),
     async saveBooking() {
       if (this.validate()) {
         await this.createBooking({

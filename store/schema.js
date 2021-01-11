@@ -19,13 +19,13 @@ const agent = new https.Agent({
 
 
 const initState = () => ({
-    bookings: "init"
+    bookings: []
 })
 
 export const state = initState
 
 export const mutations = {
-    setBookings(state, bookings) {
+    setBookings(state, {bookings}) {
         state.bookings = bookings
     },
     reset(state) {
@@ -38,19 +38,9 @@ export const mutations = {
 }
 
 export const actions = {
-    // async nuxtServerInit({ commit }) {
-    //     const bookings = (await Axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
-    //     commit("setBookings", bookings);
-    // },
-    nuxtServerInit({ dispatch }) {
-        //const bookings = (await Axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
-        //commit("setBookings", bookings);
-        return dispatch("schema/fetchBookings");
-    },
-    clientInit({ dispatch }) {
-        //const bookings = (await Axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
-        //commit("setBookings", bookings);
-        return dispatch("auth/initialize");
+    async fetchBookings({ commit }) {
+        const bookings = (await Axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
+        commit("setBookings", {bookings});
     },
     // async fetchBookings({ commit }) {
     //     const bookings = (await Axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;

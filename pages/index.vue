@@ -4,11 +4,11 @@
       <template v-slot:actions>
         <v-btn @click="login" color="primary">Login</v-btn>
         <v-btn @click="logout" color="primary">Logout</v-btn>
-        <v-btn @click="api('test')" >Test</v-btn>
-        <v-btn @click="api('testmod')" >TestMOD</v-btn>
+        <v-btn @click="api('test')">Test</v-btn>
+        <v-btn @click="api('testmod')">TestMOD</v-btn>
         <p>{{ testLabel }}</p>
         <v-select v-model="select" :items="items"></v-select>
-        <v-btn class="mx-2" fab dark color="indigo" @click="dialog = true">
+        <v-btn class="mx-2" fab dark color="indigo" @click="dialog = true" v-if="authenticated">
           <v-icon color="black">mdi-plus</v-icon>
         </v-btn>
       </template>
@@ -16,7 +16,7 @@
 
     <v-col cols="12" sm="8" md="6">
       <v-list three-line subheader v-if="bookings">
-        <v-list-item v-for="b in bookings" v-if="bookings">
+        <v-list-item v-for="b in bookings">
           <v-list-item-content v-if="bookings">
             <v-list-item-title>{{ b.projectName }}</v-list-item-title>
             <v-list-item-subtitle>
@@ -54,7 +54,7 @@
 </template>
 <script>
 import axios from "axios";
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
 import { schemaStore, dataStore } from "~/store";
 import CreateBooking from "~/components/CreateBooking.vue";
 import { UserManager, WebStorageStateStore } from "oidc-client";
@@ -65,40 +65,18 @@ export default {
   },
   computed: {
     ...mapState({
-      bookings: (state) => state.bookings,
       testLabel: (state) => state.message,
     }),
+    ...mapState("schema", {
+      bookings: (state) => state.bookings,
+    }),
+    ...mapGetters('auth', ['authenticated']),
   },
   data: () => ({
     dialog: false,
     items: ["Today", "This week", "This month"],
     select: "Today",
-
-    userMgr: null,
-
-    // testLabel: "",
   }),
-  created() {
-    if (!process.server) {
-      this.userMgr = new UserManager({
-        authority: "https://localhost:5001",
-        client_id: "web-client",
-        redirect_uri: "http://localhost:3000/oidc/sign-in-callback.html",
-        response_type: "code",
-        scope: "openid profile IdentityServerApi role",
-        post_logout_redirect_uri: "http://localhost:3000",
-        //silent_redirect_uri: "http://localhost:3000/",
-        userStore: new WebStorageStateStore({ store: window.localStorage }),
-      });
-
-      this.userMgr.getUser().then(user => {
-        if(user) {
-          console.log("User from Storage", user);
-          this.$axios.setToken(`Bearer ${user.access_token}`);
-        }
-      });
-    }
-  },
   methods: {
     ...mapMutations(["reset"]),
     ...mapActions(["getTest"]),
@@ -106,14 +84,16 @@ export default {
       this.dialog = arg;
     },
     login() {
-      return this.userMgr.signinRedirect();
+      return this.$auth.signinRedirect();
     },
     logout() {
-      return this.userMgr.signoutRedirect();
+      return this.$auth.signoutRedirect();
     },
     api(x) {
-      return this.$axios.$get("https://localhost:5001/api/bookings/"+x).then(s =>{
-        console.log(s)
+      return this.$axios
+        .$get("https://localhost:5001/api/bookings/" + x)
+        .then((s) => {
+          console.log(s);
         });
       // await this.getTest().then((x) => (this.testLabel = x));
     },
