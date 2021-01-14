@@ -26,12 +26,22 @@ export const mutations = {
 
 export const actions = {
     initialize({ commit }) {
-        return this.$auth.getUser()
-            .then(user => {
+        return this.$auth.querySessionStatus()
+            .then(sessionStatus => {
+                if (sessionStatus) {
+                    return this.$auth.getUser();
+                }
+            }).then(user => {
                 if (user) {
                     commit('saveUser', { user });
                     // console.log("User from Storage", user);
                     this.$axios.setToken(`Bearer ${user.access_token}`);
+                }
+            })
+            .catch(err => {
+                console.log(err.message)
+                if (err.message === "login_required") {
+                    return $auth.removeUser();
                 }
             })
             .finally(() => commit('finish'))
