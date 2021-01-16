@@ -18,7 +18,7 @@
       <v-list three-line subheader v-if="bookings">
         <v-list-item v-for="b in bookings">
           <v-list-item-content v-if="bookings">
-            <v-list-item-title>{{ b.projectName }}</v-list-item-title>
+            <v-list-item-title>{{ b.projektName }}, {{ b.customer }}</v-list-item-title>
             <v-list-item-subtitle>
               <p>Start: {{ b.start }}</p>
             </v-list-item-subtitle>

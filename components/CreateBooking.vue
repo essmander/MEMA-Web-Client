@@ -1,12 +1,16 @@
 <template>
   <v-form ref="form" v-model="valid" lazy-validation>
-    <v-text-field label="Booking id" v-model="id" :rules="idRules" required>
+    <v-text-field 
+      label="Booking id" 
+      v-model="id" 
+      :rules="idRules" 
+      required>
     </v-text-field>
 
     <v-text-field
-      label="Worker id"
-      v-model="WorkerId"
-      :rules="workerIdRules"
+      label="Customer"
+      v-model="customer"
+      :rules="customerRules"
       required
     >
     </v-text-field>
@@ -32,7 +36,9 @@
       v-model="finishDate"
     ></v-text-field>
 
-    <v-btn width="100%" :disabled="!valid" @click="saveBooking"> Create booking </v-btn>
+    <v-btn width="100%" :disabled="!valid" @click="saveBooking">
+      Create booking
+    </v-btn>
 
     <v-dialog
       transition="dialog-bottom-transition"
@@ -67,7 +73,7 @@
             <v-spacer></v-spacer>
           </v-toolbar>
           <v-card-text>
-               <v-date-picker v-model="finishDate"></v-date-picker>
+            <v-date-picker v-model="finishDate"></v-date-picker>
           </v-card-text>
           <v-card-actions class="justify-end">
             <v-btn text @click="dialog.value = false">Close</v-btn>
@@ -88,8 +94,8 @@ export default {
     dateToDialog: false,
 
     id: null,
-    WorkerId: null,
     projectName: "",
+    customer: "",
     start: null,
     finish: null,
     date: null,
@@ -105,18 +111,19 @@ export default {
       (v) => /([0-9])/.test(v) || "worker Id can only be numbers",
     ],
     projectNameRules: [(v) => !!v || "Project name is required"],
+    customerRules: [(v) => !!v || "Project name is required"],
   }),
 
   methods: {
     // ...mapMutations(["reset"]),
-    ...mapActions('schema',["createBooking"]),
+    ...mapActions("schema", ["createBooking"]),
     async saveBooking() {
       if (this.validate()) {
         await this.createBooking({
           booking: {
-            id: this.id,
-            WorkerId: this.WorkerId,
-            projectName: this.projectName,
+            BookingId: this.id,
+            projektName: this.projectName,
+            customer: this.customer,
             start: this.startDate,
             finish: this.finishDate,
           },
