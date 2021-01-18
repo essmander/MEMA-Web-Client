@@ -39,15 +39,14 @@ export const mutations = {
 
 export const actions = {
     async fetchBookings({ commit }) {
-        const bookings = (await Axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
+        const bookings = (await this.$axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
         commit("setBookings", {bookings});
     },
-    // async fetchBookings({ commit }) {
-    //     const bookings = (await Axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
-    //     commit("setBookings", bookings);
-    // },
-    async createBooking({ commit, dispatch }, { booking }) {
-        await Axios.post("https://localhost:5001/api/bookings", booking, { httpsAgent: agent });
+    async fetchBookingBySpan({ commit }) {
+        const bookings = (await this.$axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
+    },
+    async createBooking({ dispatch }, { booking }) {
+        await this.$axios.post("https://localhost:5001/api/bookings", booking, { httpsAgent: agent });
         await dispatch('fetchBookings');
     },
     async getTest({ commit }) {

@@ -38,27 +38,12 @@ export const mutations = {
 }
 
 export const actions = {
-    // async nuxtServerInit({ commit }) {
-    //     const bookings = (await Axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
-    //     commit("setBookings", bookings);
-    // },
+
     nuxtServerInit({ dispatch }) {
-        //const bookings = (await Axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
-        //commit("setBookings", bookings);
         return dispatch("schema/fetchBookings");
     },
     clientInit({ dispatch }) {
-        //const bookings = (await Axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
-        //commit("setBookings", bookings);
         return dispatch("auth/initialize");
-    },
-    // async fetchBookings({ commit }) {
-    //     const bookings = (await Axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
-    //     commit("setBookings", bookings);
-    // },
-    async createBooking({ commit, dispatch }, { booking }) {
-        await Axios.post("https://localhost:5001/api/bookings", booking, { httpsAgent: agent });
-        await dispatch('fetchBookings');
     },
     async getTest({ commit }) {
         //window.console.log("APA TEST");

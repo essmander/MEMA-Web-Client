@@ -1,5 +1,6 @@
 const initState = () => ({
     user: null,
+    profile: null,
     loading: true
 });
 
@@ -19,6 +20,9 @@ export const mutations = {
     saveUser(state, { user }) {
         state.user = user
     },
+    saveProfile(state, { profile }) {
+        state.profile = profile
+    },
     finish(state) {
         state.loading = false
     }
@@ -31,11 +35,13 @@ export const actions = {
                 if (sessionStatus) {
                     return this.$auth.getUser();
                 }
-            }).then(user => {
+            }).then(async (user) => {
                 if (user) {
                     commit('saveUser', { user });
                     // console.log("User from Storage", user);
                     this.$axios.setToken(`Bearer ${user.access_token}`);
+                    const profile = await this.$axios.get('https://localhost:5001/api/users/me');
+                    commit('saveProfile', { profile })
                 }
             })
             .catch(err => {
@@ -45,5 +51,27 @@ export const actions = {
                 }
             })
             .finally(() => commit('finish'))
+    },
+    _watchUserLoaded({ state }, action) {
+        if (process.server) return;
+        
+        return new Promise(async (resolve, reject) => {
+            if (state.loading) {
+                console.log("start watching")
+                const unwatch = this.watch(
+                    (s) => s.auth.loading,
+                    (n, o) => {
+                        if(!n) {
+                            console.log("user finished loading executing action")
+                            resolve(action());
+                        }
+                        unwatch();
+                    }
+                )
+            } else {
+                console.log("user is already loaded");
+                resolve(action());
+            }
+        })
     }
 }

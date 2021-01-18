@@ -58,8 +58,10 @@ import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
 import { schemaStore, dataStore } from "~/store";
 import CreateBooking from "~/components/CreateBooking.vue";
 import { UserManager, WebStorageStateStore } from "oidc-client";
+import { guard } from '~/components/auth/auth-mixins';
 
 export default {
+  mixins: [guard("")],
   components: {
     CreateBooking,
   },
