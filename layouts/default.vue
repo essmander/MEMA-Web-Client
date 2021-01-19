@@ -5,7 +5,7 @@
         <nuxt />
       </v-container>
     </v-main>
-    <bottom-navigation />
+    <bottom-navigation v-if="authenticated"/>
   </v-app>
 </template>
 
@@ -19,7 +19,7 @@ export default {
   },
   computed: {
     ...mapState("auth", ["loading"]),
-    // ...mapGetters("auth", ["authenticated"]),
+    ...mapGetters("auth", ["authenticated"]),
   },
 };
 </script>

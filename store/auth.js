@@ -13,7 +13,7 @@ const ROLES = {
 
 export const getters = {
     authenticated: state => !state.loading && state.user != null,
-    moderator: (state, getters) => getters.authenticate && state.user.profile.role === ROLES.MODERATOR,
+    moderator: (state, getters) => getters.authenticated && state.user.profile.role === ROLES.MODERATOR,
 }
 
 export const mutations = {
@@ -52,7 +52,7 @@ export const actions = {
             })
             .finally(() => commit('finish'))
     },
-    _watchUserLoaded({ state }, action) {
+    _watchUserLoaded({ state, getters }, action) {
         if (process.server) return;
         
         return new Promise(async (resolve, reject) => {
@@ -61,7 +61,9 @@ export const actions = {
                 const unwatch = this.watch(
                     (s) => s.auth.loading,
                     (n, o) => {
-                        if(!n) {
+                        if (!getters.authenticated) {
+                            this.$auth.signinRedirect();
+                        } else if(!n) {
                             console.log("user finished loading executing action")
                             resolve(action());
                         }

@@ -45,6 +45,7 @@ export const actions = {
     clientInit({ dispatch }) {
         return dispatch("auth/initialize");
     },
+    
     async getTest({ commit }) {
         //window.console.log("APA TEST");
         const message = (await Axios.get("https://localhost:5001/api/bookings/test", { httpsAgent: agent })).data;

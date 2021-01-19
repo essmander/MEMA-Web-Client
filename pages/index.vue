@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center" align="center">
+  <v-row justify="center" align="center" v-if="authenticated">
     <v-banner width="100%">
       <template v-slot:actions>
         <v-btn @click="login" color="primary">Login</v-btn>
@@ -8,7 +8,7 @@
         <v-btn @click="api('testmod')">TestMOD</v-btn>
         <p>{{ testLabel }}</p>
         <v-select v-model="select" :items="items"></v-select>
-        <v-btn class="mx-2" fab dark color="indigo" @click="dialog = true" v-if="authenticated">
+        <v-btn class="mx-2" fab dark color="indigo" @click="dialog = true" v-if="moderator">
           <v-icon color="black">mdi-plus</v-icon>
         </v-btn>
       </template>
@@ -58,10 +58,10 @@ import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
 import { schemaStore, dataStore } from "~/store";
 import CreateBooking from "~/components/CreateBooking.vue";
 import { UserManager, WebStorageStateStore } from "oidc-client";
-import { guard } from '~/components/auth/auth-mixins';
+import { guard, GUARD_LEVEL } from '~/components/auth/auth-mixins';
 
 export default {
-  mixins: [guard("")],
+  mixins: [guard(GUARD_LEVEL.AUTH)],
   components: {
     CreateBooking,
   },
@@ -69,10 +69,10 @@ export default {
     ...mapState({
       testLabel: (state) => state.message,
     }),
-    ...mapState("schema", {
+    ...mapState('schema', {
       bookings: (state) => state.bookings,
     }),
-    ...mapGetters('auth', ['authenticated']),
+    ...mapGetters('auth', ['authenticated', 'moderator']),
   },
   data: () => ({
     dialog: false,
@@ -81,7 +81,6 @@ export default {
   }),
   methods: {
     ...mapMutations(["reset"]),
-    ...mapActions(["getTest"]),
     closeDialog(arg) {
       this.dialog = arg;
     },

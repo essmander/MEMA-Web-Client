@@ -13,8 +13,6 @@
     <v-icon>mdi-calendar</v-icon>
   </v-btn>
 
-    
-
     <v-btn to="/drivingJournal">
       <span>Journal</span>
 
@@ -26,7 +24,6 @@
 
       <v-icon>mdi-account-group </v-icon>
     </v-btn>
-
     
   </v-bottom-navigation>
 </template>

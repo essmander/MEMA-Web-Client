@@ -1,10 +1,6 @@
 <template>
   <v-form ref="form" v-model="valid" lazy-validation>
-    <v-text-field 
-      label="Booking id" 
-      v-model="id" 
-      :rules="idRules" 
-      required>
+    <v-text-field label="Booking id" v-model="id" :rules="idRules" required>
     </v-text-field>
 
     <v-text-field
@@ -27,13 +23,6 @@
       required
       label="Start"
       v-model="startDate"
-    ></v-text-field>
-
-    <v-text-field
-      @click="openDateToDialog"
-      required
-      label="Finished"
-      v-model="finishDate"
     ></v-text-field>
 
     <v-btn width="100%" :disabled="!valid" @click="saveBooking">
@@ -60,27 +49,6 @@
         </v-card>
       </template>
     </v-dialog>
-
-    <v-dialog
-      transition="dialog-bottom-transition"
-      max-width="600"
-      v-model="dateToDialog"
-    >
-      <template v-slot:default="dialog">
-        <v-card>
-          <v-toolbar dark>
-            <v-toolbar-title> Select end date</v-toolbar-title>
-            <v-spacer></v-spacer>
-          </v-toolbar>
-          <v-card-text>
-            <v-date-picker v-model="finishDate"></v-date-picker>
-          </v-card-text>
-          <v-card-actions class="justify-end">
-            <v-btn text @click="dialog.value = false">Close</v-btn>
-          </v-card-actions>
-        </v-card>
-      </template>
-    </v-dialog>
   </v-form>
 </template>
 
@@ -91,16 +59,14 @@ export default {
   data: () => ({
     valid: false,
     dateFromDialog: false,
-    dateToDialog: false,
 
     id: null,
     projectName: "",
     customer: "",
     start: null,
-    finish: null,
     date: null,
     startDate: new Date().toISOString().substr(0, 10),
-    finishDate: new Date().toISOString().substr(0, 10),
+    // finishDate: new Date().toISOString().substr(0, 10),
 
     idRules: [
       (v) => !!v || "ID is required",
@@ -125,7 +91,6 @@ export default {
             projektName: this.projectName,
             customer: this.customer,
             start: this.startDate,
-            finish: this.finishDate,
           },
         });
 
@@ -144,9 +109,6 @@ export default {
     },
     openDateFromDialog() {
       this.dateFromDialog = true;
-    },
-    openDateToDialog() {
-      this.dateToDialog = true;
     },
   },
 };
