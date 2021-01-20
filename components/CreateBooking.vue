@@ -1,20 +1,16 @@
 <template>
   <v-form ref="form" v-model="valid" lazy-validation>
-    <v-text-field label="Booking id" v-model="id" :rules="idRules" required>
-    </v-text-field>
+    <v-text-field
+      label="Project name"
+      v-model="projectName"
+      :rules="projectNameRules"
+      required
+    ></v-text-field>
 
     <v-text-field
       label="Customer"
       v-model="customer"
       :rules="customerRules"
-      required
-    >
-    </v-text-field>
-
-    <v-text-field
-      label="Project name"
-      v-model="projectName"
-      :rules="projectNameRules"
       required
     ></v-text-field>
 
@@ -59,8 +55,6 @@ export default {
   data: () => ({
     valid: false,
     dateFromDialog: false,
-
-    id: null,
     projectName: "",
     customer: "",
     start: null,
@@ -68,14 +62,14 @@ export default {
     startDate: new Date().toISOString().substr(0, 10),
     // finishDate: new Date().toISOString().substr(0, 10),
 
-    idRules: [
-      (v) => !!v || "ID is required",
-      (v) => /([0-9])/.test(v) || "ID can only be numbers",
-    ],
-    workerIdRules: [
-      (v) => !!v || "Worker is required",
-      (v) => /([0-9])/.test(v) || "worker Id can only be numbers",
-    ],
+    // idRules: [
+    //   (v) => !!v || "ID is required",
+    //   (v) => /([0-9])/.test(v) || "ID can only be numbers",
+    // ],
+    // workerIdRules: [
+    //   (v) => !!v || "Worker is required",
+    //   (v) => /([0-9])/.test(v) || "worker Id can only be numbers",
+    // ],
     projectNameRules: [(v) => !!v || "Project name is required"],
     customerRules: [(v) => !!v || "Project name is required"],
   }),
@@ -87,10 +81,10 @@ export default {
       if (this.validate()) {
         await this.createBooking({
           booking: {
-            BookingId: this.id,
-            projektName: this.projectName,
+            projectName: this.projectName,
             customer: this.customer,
             start: this.startDate,
+            //finished: "2021-06-03T00:00:00"
           },
         });
 
