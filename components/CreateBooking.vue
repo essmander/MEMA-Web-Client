@@ -84,7 +84,7 @@ export default {
             projectName: this.projectName,
             customer: this.customer,
             start: this.startDate,
-            //finished: "2021-06-03T00:00:00"
+            finish: this.startDate
           },
         });
 

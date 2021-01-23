@@ -39,12 +39,14 @@ export const mutations = {
 
 export const actions = {
 
-    nuxtServerInit({ dispatch }) {
-        return dispatch("schema/fetchBookings");
-    },
+    // nuxtServerInit({ dispatch }) {
+    //     return dispatch("schema/fetchBookings");
+    // },
     clientInit({ dispatch }) {
         return dispatch("auth/initialize");
     },
+
+    
     
     async getTest({ commit }) {
         //window.console.log("APA TEST");

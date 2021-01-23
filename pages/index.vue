@@ -2,10 +2,10 @@
   <v-row justify="center" align="center" v-if="authenticated">
     <v-banner width="100%">
       <template v-slot:actions>
-        <v-btn @click="login" color="primary">Login</v-btn>
+        <!-- <v-btn @click="login" color="primary">Login</v-btn>
         <v-btn @click="logout" color="primary">Logout</v-btn>
         <v-btn @click="api('test')">Test</v-btn>
-        <v-btn @click="api('testmod')">TestMOD</v-btn>
+        <v-btn @click="api('testmod')">TestMOD</v-btn> -->
         <p>{{ testLabel }}</p>
         <v-select v-model="select" :items="items"></v-select>
         <v-btn
@@ -13,7 +13,7 @@
           fab
           dark
           color="indigo"
-          @click="dialog = true"
+          @click="createBookingDialog = true"
           v-if="moderator"
         >
           <v-icon color="black">mdi-plus</v-icon>
@@ -25,30 +25,31 @@
       <v-list three-line subheader v-if="bookings">
         <v-list-item v-for="b in bookings">
           <v-list-item-content v-if="bookings">
-            <v-list-item-title
-              >{{ b.bookingId }}, {{ b.projectName }},
-              {{ b.customer }}</v-list-item-title
-            >
-            <v-list-item-subtitle>
-              <p>Start: {{ b.start }}</p>
-            </v-list-item-subtitle>
+            <div @click="test(b.bookingId)">
+              <v-list-item-title
+                >{{ b.bookingId }}, {{ b.projectName }},
+                {{ b.customer }}</v-list-item-title
+              >
+              <v-list-item-subtitle>
+                <p>Start: {{ b.start }}</p>
+              </v-list-item-subtitle>
+            </div>
           </v-list-item-content>
-          <v-icon>mdi-trash-can-outline</v-icon>
+          <!-- <v-icon>mdi-trash-can-outline</v-icon> -->
           <v-icon>mdi-check-bold </v-icon>
-          <v-icon>mdi-clipboard-edit-outline </v-icon>
-           
+          <!-- <v-icon>mdi-clipboard-edit-outline </v-icon> -->
         </v-list-item>
       </v-list>
 
       <v-dialog
-        v-model="dialog"
+        v-model="createBookingDialog"
         fullscreen
         hide-overlay
         transition="dialog-bottom-transition"
       >
         <v-card>
           <v-toolbar dark>
-            <v-btn icon dark @click="dialog = false">
+            <v-btn icon dark @click="createBookingDialog = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-toolbar-title>New booking</v-toolbar-title>
@@ -84,22 +85,29 @@ export default {
       bookings: (state) => state.bookings,
     }),
     ...mapGetters("auth", ["authenticated", "moderator"]),
+    // ...mapActions("schema", ["fetchBookings"]),
   },
   data: () => ({
-    dialog: false,
+    createBookingDialog: false,
     items: ["Today", "This week", "This month"],
     select: "Today",
   }),
+  async fetch() {
+    await this.$store.dispatch('schema/fetchBookings');
+  },
   methods: {
     ...mapMutations(["reset"]),
     closeDialog(arg) {
-      this.dialog = arg;
+      this.createBookingDialog = arg;
     },
     login() {
       return this.$auth.signinRedirect();
     },
     logout() {
       return this.$auth.signoutRedirect();
+    },
+    test(id) {
+      this.$router.push({ name: "updateBooking", params: { bookingId: id } });
     },
     api(x) {
       return this.$axios

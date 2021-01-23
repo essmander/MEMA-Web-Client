@@ -1,17 +1,6 @@
-// import { Store } from 'vuex'
-// import { initialiseStores } from '~/utils/store-accessor'
-
-// const initializer = (store: Store<any>) => initialiseStores(store)
-
-// export const plugins = [initializer]
-// export * from '~/utils/store-accessor'
-
-
 import Axios from "axios";
 import { getDefaultSettings } from "http";
 import https from 'https'
-
-
 
 const agent = new https.Agent({
     rejectUnauthorized: false
@@ -25,8 +14,11 @@ const initState = () => ({
 export const state = initState
 
 export const mutations = {
-    setBookings(state, {bookings}) {
+    setBookings(state, { bookings }) {
         state.bookings = bookings
+    },
+    setBooking(state, { booking }) {
+        state.booking = booking
     },
     reset(state) {
         Object.assign(state, initState())
@@ -40,13 +32,14 @@ export const mutations = {
 export const actions = {
     async fetchBookings({ commit }) {
         const bookings = (await this.$axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
-        commit("setBookings", {bookings});
-    },
-    async fetchBookingBySpan({ commit }) {
-        const bookings = (await this.$axios.get("https://localhost:5001/api/bookings", { httpsAgent: agent })).data;
+        commit("setBookings", { bookings });
     },
     async createBooking({ dispatch }, { booking }) {
         await this.$axios.post("https://localhost:5001/api/bookings", booking, { httpsAgent: agent });
+        await dispatch('fetchBookings');
+    },
+    async updateBooking({ dispatch }, { booking }) {
+        await this.$axios.patch("https://localhost:5001/api/bookings", booking, { httpsAgent: agent });
         await dispatch('fetchBookings');
     },
     async getTest({ commit }) {
