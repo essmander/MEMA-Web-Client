@@ -2,20 +2,20 @@
   <v-form ref="form">
     <v-text-field
       label="Project name"
-      :value="booking.projectName"
+      v-model="booking.projectName"
       required
     ></v-text-field>
 
     <v-text-field
       label="Customer"
-      :value="booking.customer"
+      v-model="booking.customer"
       required
     ></v-text-field>
 
     <v-text-field
       @click="openDateFromDialog"
       label="Start"
-      :value="booking.start"
+      v-model="booking.start"
     ></v-text-field>
 
     <v-btn width="100%" @click="saveBooking"> Save booking </v-btn>
@@ -51,36 +51,9 @@ export default {
       bookings: (state) => state.bookings,
     }),
   },
-
-  //      data: () => ({
-  //     valid: false,
-  //     dateFromDialog: false,
-  //     projectName: "",
-  //     customer: "",
-  //     start: null,
-  //     date: null,
-  //     startDate: new Date().toISOString().substr(0, 10),
-  //     // finishDate: new Date().toISOString().substr(0, 10),
-
-  //     // idRules: [
-  //     //   (v) => !!v || "ID is required",
-  //     //   (v) => /([0-9])/.test(v) || "ID can only be numbers",
-  //     // ],
-  //     // workerIdRules: [
-  //     //   (v) => !!v || "Worker is required",
-  //     //   (v) => /([0-9])/.test(v) || "worker Id can only be numbers",
-  //     // ],
-  //     projectNameRules: [(v) => !!v || "Project name is required"],
-  //     customerRules: [(v) => !!v || "Project name is required"],
-  //   }),
-
   data: () => ({
     booking: "",
     dateFromDialog: false,
-    // projectName: booking.projectName,
-    // customer: booking.customer,
-    // start: bookings.start,
-    // date: null,
     startDate: new Date().toISOString().substr(0, 10),
   }),
   created() {
@@ -97,9 +70,9 @@ export default {
     async saveBooking() {
         await this.updateBooking({
           booking: this.booking,
+        }).then(r => {
+            this.$router.push({ name: "index" });
         });
-
-    //   console.log(this.booking);
     },
   },
 };

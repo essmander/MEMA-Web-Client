@@ -25,7 +25,7 @@
       <v-list three-line subheader v-if="bookings">
         <v-list-item v-for="b in bookings">
           <v-list-item-content v-if="bookings">
-            <div @click="test(b.bookingId)">
+            <div @click="updateBooking(b.bookingId)">
               <v-list-item-title
                 >{{ b.bookingId }}, {{ b.projectName }},
                 {{ b.customer }}</v-list-item-title
@@ -106,7 +106,7 @@ export default {
     logout() {
       return this.$auth.signoutRedirect();
     },
-    test(id) {
+    updateBooking(id) {
       this.$router.push({ name: "updateBooking", params: { bookingId: id } });
     },
     api(x) {
