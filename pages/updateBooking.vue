@@ -18,7 +18,7 @@
       :value="booking.start"
     ></v-text-field>
 
-    <v-btn width="100%" @click="updateBooking"> Save booking </v-btn>
+    <v-btn width="100%" @click="saveBooking"> Save booking </v-btn>
 
     <v-dialog
       transition="dialog-bottom-transition"
@@ -32,7 +32,7 @@
             <v-spacer></v-spacer>
           </v-toolbar>
           <v-card-text>
-            <v-date-picker></v-date-picker>
+            <v-date-picker v-model="booking.start"></v-date-picker>
           </v-card-text>
           <v-card-actions class="justify-end">
             <v-btn text @click="dialog.value = false">Close</v-btn>
@@ -87,17 +87,19 @@ export default {
     this.booking = this.bookings.find(
       (x) => x.bookingId == this.$route.params.bookingId
     );
-    this.startDate = new Date(this.booking.start).toISOString().substr(0, 10);
+    this.booking.start = new Date(this.booking.start).toISOString().substr(0, 10);
   },
   methods: {
     ...mapActions("schema", ["updateBooking"]),
     openDateFromDialog() {
       this.dateFromDialog = true;
     },
-    async updateBooking() {
-      //   await this.updateBooking(this.booking);
+    async saveBooking() {
+        await this.updateBooking({
+          booking: this.booking,
+        });
 
-      console.log(this.booking);
+    //   console.log(this.booking);
     },
   },
 };
