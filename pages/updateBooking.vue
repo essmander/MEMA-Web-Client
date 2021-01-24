@@ -19,9 +19,12 @@
     ></v-text-field>
 
     <v-btn width="100%" @click="saveBooking"> Save booking </v-btn>
-    <br>
-    <br>
+    <br />
+    <br />
     <v-btn width="100%" @click="removeBooking"> Delete booking </v-btn>
+    <br />
+    <br />
+    <v-btn width="100%" @click="finishedProject"> Finish project </v-btn>
 
     <v-dialog
       transition="dialog-bottom-transition"
@@ -43,6 +46,28 @@
         </v-card>
       </template>
     </v-dialog>
+
+    <v-dialog
+      transition="dialog-bottom-transition"
+      max-width="600"
+      v-model="dateToDialog"
+    >
+      <template v-slot:default="dialog">
+        <v-card>
+          <v-toolbar dark>
+            <v-toolbar-title> Select end date</v-toolbar-title>
+            <v-btn text @click="dialog.value = false">Close</v-btn>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+          <v-card-text>
+            <v-date-picker v-model="endBooking"></v-date-picker>
+          </v-card-text>
+          <v-card-actions class="justify-end">
+            <v-btn text @click="endProject">Finish project</v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
   </v-form>
 </template>
 <script>
@@ -57,31 +82,43 @@ export default {
   data: () => ({
     booking: "",
     dateFromDialog: false,
+    dateToDialog: false,
     startDate: new Date().toISOString().substr(0, 10),
+    endBooking: new Date().toISOString().substr(0, 10),
   }),
   created() {
     this.booking = this.bookings.find(
       (x) => x.bookingId == this.$route.params.bookingId
     );
-    this.booking.start = new Date(this.booking.start).toISOString().substr(0, 10);
+    this.booking.start = new Date(this.booking.start)
+      .toISOString()
+      .substr(0, 10);
   },
   methods: {
     ...mapActions("schema", ["updateBooking", "deleteBooking"]),
     openDateFromDialog() {
       this.dateFromDialog = true;
     },
+    finishedProject() {
+      this.dateToDialog = true;
+    },
+    endProject() {
+      this.booking.finish = this.endBooking;
+      this.saveBooking();
+      this.dateToDialog = false;
+    },
     async saveBooking() {
-        await this.updateBooking({
-          booking: this.booking,
-        }).then(r => {
-            this.$router.push({ name: "index" });
-        });
+      await this.updateBooking({
+        booking: this.booking,
+      }).then((r) => {
+        this.$router.push({ name: "index" });
+      });
     },
     async removeBooking() {
-        await this.deleteBooking(this.booking.bookingId).then(r => {
-            this.$router.push({ name: "index" });
-        });
-    },  
+      await this.deleteBooking(this.booking.bookingId).then((r) => {
+        this.$router.push({ name: "index" });
+      });
+    },
   },
 };
 </script>
