@@ -19,6 +19,9 @@
     ></v-text-field>
 
     <v-btn width="100%" @click="saveBooking"> Save booking </v-btn>
+    <br>
+    <br>
+    <v-btn width="100%" @click="removeBooking"> Delete booking </v-btn>
 
     <v-dialog
       transition="dialog-bottom-transition"
@@ -63,7 +66,7 @@ export default {
     this.booking.start = new Date(this.booking.start).toISOString().substr(0, 10);
   },
   methods: {
-    ...mapActions("schema", ["updateBooking"]),
+    ...mapActions("schema", ["updateBooking", "deleteBooking"]),
     openDateFromDialog() {
       this.dateFromDialog = true;
     },
@@ -74,6 +77,11 @@ export default {
             this.$router.push({ name: "index" });
         });
     },
+    async removeBooking() {
+        await this.deleteBooking(this.booking.bookingId).then(r => {
+            this.$router.push({ name: "index" });
+        });
+    },  
   },
 };
 </script>

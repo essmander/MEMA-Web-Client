@@ -42,6 +42,11 @@ export const actions = {
         await this.$axios.patch("https://localhost:5001/api/bookings", booking, { httpsAgent: agent });
         await dispatch('fetchBookings');
     },
+    async deleteBooking({ dispatch }, id)
+    {
+        await this.$axios.delete("https://localhost:5001/api/bookings/" + id, { httpsAgent: agent });
+        await dispatch('fetchBookings');
+    },
     async getTest({ commit }) {
         //window.console.log("APA TEST");
         const message = (await Axios.get("https://localhost:5001/api/bookings/test", { httpsAgent: agent })).data;
