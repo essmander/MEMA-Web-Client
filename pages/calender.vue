@@ -32,8 +32,6 @@
               >
               <v-list-item-subtitle>
                 <p>Start: {{ b.start }}</p>
-                <p>End: {{ b.finish }}</p>
-                <p>BOOL: {{ b.isFinished }}</p>
               </v-list-item-subtitle>
             </div>
           </v-list-item-content>
@@ -94,9 +92,14 @@ export default {
     items: ["Today", "This week", "This month"],
     select: "Today",
   }),
-  async fetch() {
-    if (this.authenticated) {
-      await this.$store.dispatch("schema/fetchBookings");
+  // async fetch() {
+  //   // await this.$store.dispatch('schema/fetchBookings');
+  //   await this.$store.dispatch('schema/fetchBookingsSpan');
+  // },
+  async mounted() {
+    if (this.$store.getters["auth/authenticated"]) {
+      console.log("LOGED in!");
+      await this.$store.dispatch("schema/fetchBookingsSpan");
     }
   },
   methods: {

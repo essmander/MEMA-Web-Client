@@ -17,7 +17,7 @@
     <v-text-field
       @click="openDateFromDialog"
       required
-      label="Start"
+      label="Start date"
       v-model="startDate"
     ></v-text-field>
 
@@ -37,10 +37,12 @@
             <v-spacer></v-spacer>
           </v-toolbar>
           <v-card-text>
-            <v-date-picker v-model="startDate"></v-date-picker>
+            <v-date-picker v-model="startDate" v-if="!timePicker"></v-date-picker>
+            <!-- <v-date-picker v-model="startTime" v-if="timePicker"></v-date-picker> -->
           </v-card-text>
           <v-card-actions class="justify-end">
-            <v-btn text @click="dialog.value = false">Close</v-btn>
+            <v-btn text @click="timePicker = true" v-if="!timePicker">Select time</v-btn>
+            <v-btn text @click="dialog.value = false" v-if="timePicker">Close</v-btn>
           </v-card-actions>
         </v-card>
       </template>
@@ -60,6 +62,8 @@ export default {
     start: null,
     date: null,
     startDate: new Date().toISOString().substr(0, 10),
+    startTime: null,//new Date().toISOString().substr(11, 15),
+    timePicker: false,
     // finishDate: new Date().toISOString().substr(0, 10),
 
     // idRules: [
